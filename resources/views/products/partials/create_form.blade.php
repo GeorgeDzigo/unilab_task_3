@@ -1,7 +1,6 @@
 @section('headLink')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css">
 @endsection
-
 <div class="wrapper">
     <div id="page" class="container">
         <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
@@ -15,9 +14,8 @@
                             class="input @error("title") is-danger @enderror"
                             name="title"
                             id="title"
-                            value="{{ Request::has("edit") ? $product->title : "". old("title") }}"
+                            value="{{ Request::fullUrl() == route("product.create") ? old("title") : $product->title }}"
                         >
-
                         @error('title')
                         <p class="help is-danger">{{ $message }}</p>
                         @enderror
@@ -33,7 +31,8 @@
                             class="textarea @error("description") is-danger @enderror"
                             name="description"
                             id="description"
-                        >{{ Request::has("description") ? $product->title : "". old("description") }}</textarea>
+                        >{{ Request::fullUrl() == route("product.create") ? old("description") : $product->description }}</textarea>
+
                         @error("description")
                         <p class="help is-danger">{{ $message }}</p>
                         @enderror
@@ -57,6 +56,9 @@
                       </span>
                     </label>
                   </div>
+                    @error("photo_path")
+                        <p class="help is-danger">{{ $message }}</p>
+                    @enderror
             </div>
             <br />
             <div class="field is-grouped">
@@ -75,4 +77,4 @@
         fileName.textContent = fileInput.files[0].name;
       }
     }
-  </script>
+</script>

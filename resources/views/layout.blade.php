@@ -19,7 +19,7 @@
 
           <ul class="nav nav-pills">
             <li class="nav-item"><a href="{{ route("home") }}" class="nav-link {{ Request::is("/") ? "active" : "" }}">Home</a></li>
-            <li class="nav-item"><a href="{{ route("product.create") }}" class="nav-link {{ Request::is("/product/*") ? "active" : "" }}">Create Product</a></li>
+            <li class="nav-item"><a href="{{ route("product.create") }}" class="nav-link {{ Request::fullUrl() == route("product.create") ? "active" : ""}}">Create Product</a></li>
           </ul>
         </header>
       </div>
