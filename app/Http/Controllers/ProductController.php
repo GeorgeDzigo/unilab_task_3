@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormValidate;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -19,38 +20,24 @@ class ProductController extends Controller
     }
 
     /*
-    *   Validating request
-    */
-    protected function valid() {
-        return request()->validate([
-            "title" => "required",
-            "description" => "required",
-            "photo_path" => "mimes:jpg,png"
-        ]);
-    }
-
-    /*
     *   Deleting Product
     */
-    public function deleteProduct($id) {
-        $product = Product::where("id", $id);
-        File::delete(public_path($product->first()->photo_path));
-
+    public function delete(Product $product) {
+        File::delete(public_path($product->photo_path));
         $product->delete();
-        return redirect(route("home"));
+
+        return redirect("/");
     }
 
     /*
     *   Home page
     */
-    public function homePage() {
-        return view("products.home" , ["products" => Product::paginate(6)]);
-    }
+    public function homePage() {return view("products.home" , ["products" => Product::paginate(6)]);}
 
     /*
     *   Display Form to create product
     */
-    public function productCreate() {
+    public function create() {
         return view("products.create", [
             "type" => "Publish",
             "action" => route("product.create"),
@@ -61,51 +48,41 @@ class ProductController extends Controller
     /*
     *   Storing submitted form in DB
     */
-    public function productStore() {
-        $product = Product::create($this->valid());
-
-        if(request()->photo_path == null) {
-            $product->save();
-            return redirect(route("home"));
-        }
-        else {
-            $product->photo_path = $this->storeImage(request()->photo_path->extension());
-            $product->save();
-            return redirect(route("home"));
-        }
+    public function store(FormValidate $formValidate) {
+        Product::create([
+            'title' => $formValidate->title,
+            'description' => $formValidate->description,
+            "photo_path" => request()->photo_path != null ? $this->storeImage(request()->photo_path->extension()) : "./default.png",
+            'user_id' => auth()->user()->id,
+        ]);
+        return redirect("/");
     }
 
     /*
     *   Display form to edit selected product
     */
-    public function productEdit($id) {
+    public function edit(Product $product) {
         return view("products.edit" , [
             "type" => "Update",
-            "product" => Product::where("id" , $id)->first(),
-            "action" => route("product.update", $id),
-            ]);
+            "product" => $product,
+            "action" => route("product.update", $product->id),
+        ]);
     }
 
     /*
     *   Updating product with new submitted information
     */
-    public function productUpdate($id) {
-        $this->valid();
-        $product = Product::where("id", $id)->first();
-
+    public function update(FormValidate $formValidate, Product $product) {
         if(request()->photo_path !=null) {
-            // unlink(public_path($product->first()->photo_path));
-            File::delete(public_path($product->photo_path));
+            unlink(public_path($product->photo_path));
         }
+
         $product->update([
             "title" => request()->title,
             "description" => request()->description,
             "photo_path" => request("photo_path") != null ? $this->storeImage(request()->photo_path->extension()) : $product->photo_path,
         ]);
 
-        return redirect(route("home"));
+        return redirect("/");
     }
-
-
-
 }

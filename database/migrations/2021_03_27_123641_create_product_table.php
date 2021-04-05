@@ -15,10 +15,15 @@ class CreateProductTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("user_id");
             $table->string("title");
             $table->text("description");
             $table->string("photo_path")->default("/default.png");
             $table->timestamps();
+
+            $table->foreign("user_id")
+            ->references("id")
+            ->on("users")->onDelete("cascade");
         });
     }
 

@@ -13,34 +13,24 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-$p = "App\Http\Controllers";
-
-/*
-*   Home page route
-*/
-Route::get('/', [ProductController::class => "homePage"])->name("home");
 
 
-/*
-*   Product prefix
-*/
-Route::prefix("/product")->name("product.")->group(function () {
-    /*
-    *   Creating and storing products
-    */
-    Route::get('/create', [ProductController::class => "productCreate"])->name("create");
-    Route::post("/create", [ProductController::class => "productStore"])->name("store");
+Route::get('/', [ProductController::class, "homePage"])->name("/");
 
 
-    /*
-    *   Editing and updating products
-    */
-    Route::get("/edit/{id}", [ProductController::class => "productEdit"])->name("edit");
-    Route::post("/edit/{id}", [ProductController::class => "productUpdate"])->name("update");
+Route::prefix("/product")->name("product.")->middleware("auth")->group(function () {
 
-    /*
-    *   Delete product route
-    */
-    Route::get("/delete/{id}", [ProductController::class => "deleteProduct"])->name("delete");
+
+    Route::get('/create', [ProductController::class, "create"])->name("create");
+    Route::post("/create", [ProductController::class, "store"])->name("store");
+
+    Route::get("/edit/{product}", [ProductController::class, "edit"])->name("edit");
+    Route::post("/edit/{product}", [ProductController::class, "update"])->name("update");
+
+    Route::get("/delete/{product}", [ProductController::class, "delete"])->name("delete");
 });
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

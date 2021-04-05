@@ -9,7 +9,7 @@
     <a href="{{ route("product.delete", $product->id) }}" class="btn btn-primary">Delete</a>
     </div>
     <div class="col-auto d-none d-lg-block border shadow-sm">
-        <img class="bd-placeholder-img" width="300" height="300" src="{{ ($product->photo_path == null) == false ? $product->photo_path :"/default.png"}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false" />
+        <img class="bd-placeholder-img" width="300" height="300" src="{{ ($product->photo_path == null) == false ? $product->photo_path : "./default.png"}}" role="png" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false" />
     </div>
     </div>
 </div>
