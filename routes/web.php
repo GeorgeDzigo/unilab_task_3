@@ -20,7 +20,6 @@ Route::get('/', [ProductController::class, "homePage"])->name("/");
 
 Route::prefix("/product")->name("product.")->middleware("auth")->group(function () {
 
-
     Route::get('/create', [ProductController::class, "create"])->name("create");
     Route::post("/create", [ProductController::class, "store"])->name("store");
 
@@ -28,8 +27,11 @@ Route::prefix("/product")->name("product.")->middleware("auth")->group(function 
     Route::post("/edit/{product}", [ProductController::class, "update"])->name("update");
 
     Route::get("/delete/{product}", [ProductController::class, "delete"])->name("delete");
-});
 
+    Route::get("/showCart", [ProductController::class, "showCart"])->name("showCart");
+    Route::post("/addToCart/{product}", [ProductController::class, "addToCart"])->name("addToCart");
+
+});
 
 Auth::routes();
 

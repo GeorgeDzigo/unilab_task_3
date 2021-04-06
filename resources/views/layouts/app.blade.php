@@ -72,6 +72,9 @@
                                 <a class="nav-link text-primary" href="{{ route("product.create") }}">Create Product</a>
                             </li>
                         @endguest
+                        <li class="nav-item" style="margin-left: 150px">
+                            <a href="{{route("product.showCart")}}"><img src="https://img.icons8.com/fluent-systems-regular/30/000000/fast-cart.png" class="nav-link"/></a>
+                        </li>
                     </ul>
                 </div>
             </div>

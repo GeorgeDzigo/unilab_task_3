@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormValidate;
+use App\Models\Cart;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -32,7 +34,7 @@ class ProductController extends Controller
     /*
     *   Home page
     */
-    public function homePage() {return view("products.home" , ["products" => Product::paginate(6)]);}
+    public function homePage() {return view("products.home" , ["products" => Product::latest()->paginate(6)]);}
 
     /*
     *   Display Form to create product
@@ -41,7 +43,6 @@ class ProductController extends Controller
         return view("products.create", [
             "type" => "Publish",
             "action" => route("product.create"),
-            "product" => "NONE",
         ]);
     }
 
@@ -73,7 +74,7 @@ class ProductController extends Controller
     *   Updating product with new submitted information
     */
     public function update(FormValidate $formValidate, Product $product) {
-        if(request()->photo_path !=null) {
+        if(request()->photo_path != null) {
             unlink(public_path($product->photo_path));
         }
 
@@ -84,5 +85,27 @@ class ProductController extends Controller
         ]);
 
         return redirect("/");
+    }
+
+    /*
+    *   Adding product to cart
+    */
+
+    public function addToCart(Product $product, Cart $cart) {
+        $cart->create([
+            'user_id' => auth()->user()->id,
+            'product_id' => $product->id,
+        ]);
+        return redirect("/");
+    }
+
+    /*
+    * Showing users their cart
+    */
+
+    public function showCart() {
+        return view("products.cart", [
+            "products" => User::find(auth()->user()->id)->cart,
+        ]);
     }
 }
