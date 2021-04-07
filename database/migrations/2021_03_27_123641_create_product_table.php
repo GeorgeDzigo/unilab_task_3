@@ -18,7 +18,7 @@ class CreateProductTable extends Migration
             $table->unsignedBigInteger("user_id");
             $table->string("title");
             $table->text("description");
-            $table->string("photo_path")->default("/default.png");
+            $table->string("photo_path");
             $table->timestamps();
 
             $table->foreign("user_id")

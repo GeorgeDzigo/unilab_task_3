@@ -25,9 +25,12 @@ class ProductController extends Controller
     *   Deleting Product
     */
     public function delete(Product $product) {
-        File::delete(public_path($product->photo_path));
-        $product->delete();
+        $this->authorize("actions", $product);
+        if($product->photo_path != "/images/default.png") {
+            File::delete(public_path($product->photo_path));
+        }
 
+        $product->delete();
         return redirect("/");
     }
 
@@ -53,7 +56,7 @@ class ProductController extends Controller
         Product::create([
             'title' => $formValidate->title,
             'description' => $formValidate->description,
-            "photo_path" => request()->photo_path != null ? $this->storeImage(request()->photo_path->extension()) : "./default.png",
+            "photo_path" => request()->photo_path != null ? $this->storeImage(request()->photo_path->extension()) : "/images/default.png",
             'user_id' => auth()->user()->id,
         ]);
         return redirect("/");
@@ -63,6 +66,7 @@ class ProductController extends Controller
     *   Display form to edit selected product
     */
     public function edit(Product $product) {
+        $this->authorize("actions", $product);
         return view("products.edit" , [
             "type" => "Update",
             "product" => $product,
@@ -74,7 +78,8 @@ class ProductController extends Controller
     *   Updating product with new submitted information
     */
     public function update(FormValidate $formValidate, Product $product) {
-        if(request()->photo_path != null) {
+        $this->authorize("actions", $product);
+        if(request()->photo_path != null && $product->photo_path != "/images/default.png") {
             unlink(public_path($product->photo_path));
         }
 
@@ -85,27 +90,5 @@ class ProductController extends Controller
         ]);
 
         return redirect("/");
-    }
-
-    /*
-    *   Adding product to cart
-    */
-
-    public function addToCart(Product $product, Cart $cart) {
-        $cart->create([
-            'user_id' => auth()->user()->id,
-            'product_id' => $product->id,
-        ]);
-        return redirect("/");
-    }
-
-    /*
-    * Showing users their cart
-    */
-
-    public function showCart() {
-        return view("products.cart", [
-            "products" => User::find(auth()->user()->id)->cart,
-        ]);
     }
 }
