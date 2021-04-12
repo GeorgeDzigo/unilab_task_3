@@ -5,7 +5,7 @@
     <div class="row mb-2">
         @if ($products->count() != 0)
             @foreach ($products as $product)
-                @include('products.partials.products_boxes')
+                @include('partials.product.products_boxes')
             @endforeach
         @else
             There are no products

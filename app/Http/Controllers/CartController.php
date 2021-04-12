@@ -13,7 +13,8 @@ class CartController extends Controller
     *   Adding product to cart
     */
 
-    public function add(Product $product, Cart $cart) {
+    public function add(Product $product, Cart $cart)
+    {
         $cart->create([
             'user_id' => auth()->user()->id,
             'product_id' => $product->id,
@@ -25,9 +26,10 @@ class CartController extends Controller
     * Showing users their cart
     */
 
-    public function show() {
-        return view("products.cart", [
-            "products" => User::find(auth()->user()->id)->cart,
+    public function show()
+    {
+        return view("cart.home", [
+            "products" => Cart::where("user_id", auth()->id())->get(),
         ]);
     }
 
@@ -35,7 +37,8 @@ class CartController extends Controller
     *   Deleting carted products
     */
 
-    public function delete(Product $product) {
+    public function delete(Product $product)
+    {
         Cart::where("product_id", $product->id)->first()->delete();
         return redirect(route("cart.show"));
     }

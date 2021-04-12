@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountActivationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -19,23 +20,34 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, "homePage"])->name("/");
 
 
-Route::prefix("/product")->name("product.")->middleware("auth")->group(function () {
-
-    Route::get('/create', [ProductController::class, "create"])->name("create");
-    Route::post("/create", [ProductController::class, "store"])->name("store");
-
-    Route::get("/edit/{product}", [ProductController::class, "edit"])->name("edit");
-    Route::post("/edit/{product}", [ProductController::class, "update"])->name("update");
-
-    Route::get("/delete/{product}", [ProductController::class, "delete"])->name("delete");
-
+Route::prefix('/account')->name("acc.")->middleware(['auth'])->group(function () {
+    Route::get("/activation", [AccountActivationController::class, "show"])->name("activation");
+    Route::post("/activation/{id}", [AccountActivationController::class, "update"])->name("activation");
 });
 
-Route::prefix("/cart")->name("cart.")->middleware("auth")->group(function() {
-    Route::get("/show", [CartController::class, "show"])->name("show");
-    Route::post("/add/{product}", [CartController::class, "add"])->name("add");
-    Route::post("/delete/{product}", [CartController::class, "delete"])->name("delete");
+Route::middleware(['auth', 'userStatusCheck'])->group(function () {
+
+    Route::prefix("/product")->name("product.")->group(function () {
+
+        Route::get('/create', [ProductController::class, "create"])->name("create");
+        Route::post("/create", [ProductController::class, "store"])->name("store");
+
+        Route::get("/edit/{product}", [ProductController::class, "edit"])->name("edit");
+        Route::post("/edit/{product}", [ProductController::class, "update"])->name("update");
+
+        Route::get("/delete/{product}", [ProductController::class, "delete"])->name("delete");
+
+    });
+
+    Route::prefix("/cart")->name("cart.")->group(function() {
+        Route::get("/show", [CartController::class, "show"])->name("show");
+        Route::post("/add/{product}", [CartController::class, "add"])->name("add");
+
+        Route::post("/delete/{product}", [CartController::class, "delete"])->name("delete");
+    });
 });
+
+
 
 Auth::routes();
 

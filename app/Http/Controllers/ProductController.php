@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormValidate;
+use App\Http\Requests\ProductFormValidate;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
@@ -14,7 +14,8 @@ class ProductController extends Controller
     /*
     *   Storing image and returning path
     */
-    protected function storeImage($extension) {
+    protected function storeImage($extension)
+    {
         $newImageName = rand() . "_" . time() . ".$extension" ;
         request()->photo_path->move(public_path("/images"), "$newImageName");
 
@@ -24,9 +25,11 @@ class ProductController extends Controller
     /*
     *   Deleting Product
     */
-    public function delete(Product $product) {
+    public function delete(Product $product)
+    {
         $this->authorize("actions", $product);
-        if($product->photo_path != "/images/default.png") {
+        if($product->photo_path != "/images/default.png")
+        {
             File::delete(public_path($product->photo_path));
         }
 
@@ -37,12 +40,18 @@ class ProductController extends Controller
     /*
     *   Home page
     */
-    public function homePage() {return view("products.home" , ["products" => Product::latest()->paginate(6)]);}
+    public function homePage()
+    {
+        return view("products.home" , [
+            "products" => Product::where("user_id", auth()->id())->latest()->paginate(4),
+        ]);
+    }
 
     /*
     *   Display Form to create product
     */
-    public function create() {
+    public function create()
+    {
         return view("products.create", [
             "type" => "Publish",
             "action" => route("product.create"),
@@ -52,10 +61,11 @@ class ProductController extends Controller
     /*
     *   Storing submitted form in DB
     */
-    public function store(FormValidate $formValidate) {
+    public function store(ProductFormValidate $request)
+    {
         Product::create([
-            'title' => $formValidate->title,
-            'description' => $formValidate->description,
+            'title' => $request->title,
+            'description' => $request->description,
             "photo_path" => request()->photo_path != null ? $this->storeImage(request()->photo_path->extension()) : "/images/default.png",
             'user_id' => auth()->user()->id,
         ]);
@@ -65,7 +75,8 @@ class ProductController extends Controller
     /*
     *   Display form to edit selected product
     */
-    public function edit(Product $product) {
+    public function edit(Product $product)
+    {
         $this->authorize("actions", $product);
         return view("products.edit" , [
             "type" => "Update",
@@ -77,7 +88,8 @@ class ProductController extends Controller
     /*
     *   Updating product with new submitted information
     */
-    public function update(FormValidate $formValidate, Product $product) {
+    public function update(ProductFormValidate $request, Product $product)
+    {
         $this->authorize("actions", $product);
         if(request()->photo_path != null && $product->photo_path != "/images/default.png") {
             unlink(public_path($product->photo_path));
