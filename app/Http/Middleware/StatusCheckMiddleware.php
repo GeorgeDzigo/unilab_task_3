@@ -18,7 +18,7 @@ class StatusCheckMiddleware
     public function handle(Request $request, Closure $next)
     {
         if($request->user()->status != 1) {
-            return redirect(route("acc.activation"));
+            return redirect(route("account.show"));
         }
         return $next($request);
     }

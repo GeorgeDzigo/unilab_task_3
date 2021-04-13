@@ -53,7 +53,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a  class="nav-link" href="{{route("/")}}" role="button">
+                                <a  class="nav-link" href="{{route("home")}}" role="button">
                                     {{ Auth::user()->name }}
                                 </a>
                             </li>
@@ -70,6 +70,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-primary" href="{{ route("product.create") }}">Create Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-primary" href="{{ route("account.show") }}"> {{ Auth()->user()->status == 0 ? "Enable Your Account" : "Disable Your Account" }}</a>
                             </li>
                         @endguest
                         <li class="nav-item" style="margin-left: 150px">

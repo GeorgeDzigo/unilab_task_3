@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [ProductController::class, "homePage"])->name("/");
+Route::get('/', [ProductController::class, "homePage"])->name("home");
 
 
-Route::prefix('/account')->name("acc.")->middleware(['auth'])->group(function () {
-    Route::get("/activation", [AccountActivationController::class, "show"])->name("activation");
-    Route::post("/activation/{id}", [AccountActivationController::class, "update"])->name("activation");
+Route::prefix('/account')->name("account.")->middleware(['auth'])->group(function () {
+    Route::get("/activation", [AccountActivationController::class, "show"])->name("show");
+    Route::post("/enable/{id}", [AccountActivationController::class, "enable"])->name("enable");
+    Route::post("/disable/{id}", [AccountActivationController::class, "disable"])->name("disable");
 });
 
 Route::middleware(['auth', 'userStatusCheck'])->group(function () {
