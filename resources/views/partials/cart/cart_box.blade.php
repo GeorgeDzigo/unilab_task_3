@@ -4,7 +4,8 @@
             <img class="bd-placeholder-img" style="max-width:300px; max-height:300px;" height="80%" width="80%" src="{{ $product->photo_path }}" role="png" aria-label="Placeholder: Thumbnail" preserveaspectratio="xMidYMid slice" focusable="false">
         </div>
         <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">{{$product->title}}</strong>
+            <strong class="d-inline-block mb-2 text-primary">{{ $product->title }}</strong>
+            <strong class="d-inline-block mb-2 ">Quantity : {{ $quantity }}</strong>
             <a class="btn btn-primary" href="{{ route("cart.delete", $product->id) }}" onclick="event.preventDefault();
                             document.getElementById('delete{{ $product->id }}').submit();">
                 Delete

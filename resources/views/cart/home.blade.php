@@ -6,7 +6,7 @@
 
     <div class="row mb-2">
         @foreach ($products as $product)
-            @include('partials.cart.cart_box', ["product" => $product->cart])
+            @include('partials.cart.cart_box', ["product" => $product->cart, "quantity" => $product->quantity])
         @endforeach
     </div>
 </div>

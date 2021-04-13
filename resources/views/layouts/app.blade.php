@@ -60,7 +60,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                              document.getElementById('logout-form').submit();">
+                                              document.getElementById('logout-form').submit();">    
                                  {{ __('Logout') }}
                                 </a>
 
@@ -72,7 +72,7 @@
                                 <a class="nav-link text-primary" href="{{ route("product.create") }}">Create Product</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-primary" href="{{ route("account.show") }}"> {{ Auth()->user()->status == 0 ? "Enable Your Account" : "Disable Your Account" }}</a>
+                                <a class="nav-link text-danger" href="{{ route("account.show") }}"> {{ Auth()->user()->status == 0 ? "Enable Your Account" : "Disable Your Account" }}</a>
                             </li>
                         @endguest
                         <li class="nav-item" style="margin-left: 150px">

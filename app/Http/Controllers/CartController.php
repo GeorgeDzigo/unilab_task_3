@@ -13,13 +13,21 @@ class CartController extends Controller
     *   Adding product to cart
     */
 
-    public function add(Product $product, Cart $cart)
+    public function add(Product $product)
     {
-        $cart->create([
-            'user_id' => auth()->user()->id,
+         if ($cart = Cart::where("user_id", auth()->id())->where("product_id", $product->id)->first()) {
+            $cart->update([
+                "quantity" => ++$cart->quantity,
+                ]);
+            return redirect(route("home"));
+         }
+
+        Cart::create([
+            'user_id' => auth()->id(),
             'product_id' => $product->id,
+            'quantity' => 1,
         ]);
-        return redirect("/");
+        return redirect(route("home"));
     }
 
     /*
