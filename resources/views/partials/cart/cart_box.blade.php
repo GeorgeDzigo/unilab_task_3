@@ -6,6 +6,8 @@
         <div class="col p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">{{ $product->title }}</strong>
             <strong class="d-inline-block mb-2 ">Quantity : {{ $quantity }}</strong>
+            <strong class="d-inline-block mb-2 ">Total Price : {{ $quantity * $product->price }}$</strong>
+            <strong class="d-inline-block mb-2 ">Product Price : {{ $product->price }}$</strong>
             <a class="btn btn-primary" href="{{ route("cart.delete", $product->id) }}" onclick="event.preventDefault();
                             document.getElementById('delete{{ $product->id }}').submit();">
                 Delete

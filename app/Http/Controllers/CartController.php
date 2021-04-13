@@ -19,7 +19,7 @@ class CartController extends Controller
             $cart->update([
                 "quantity" => ++$cart->quantity,
                 ]);
-            return redirect(route("home"));
+            return redirect("/");
          }
 
         Cart::create([
@@ -27,7 +27,7 @@ class CartController extends Controller
             'product_id' => $product->id,
             'quantity' => 1,
         ]);
-        return redirect(route("home"));
+        return redirect("/");
     }
 
     /*

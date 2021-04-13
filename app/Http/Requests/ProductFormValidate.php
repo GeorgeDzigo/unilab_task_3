@@ -27,6 +27,7 @@ class ProductFormValidate extends FormRequest
             "title" => "required|max:255",
             "description" => "required",
             "photo_path" => "mimes:png,jpg",
+            "price" => "required",
         ];
     }
 }

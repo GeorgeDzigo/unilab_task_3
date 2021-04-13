@@ -55,6 +55,7 @@ class ProductController extends Controller
         return view("products.create", [
             "type" => "Publish",
             "action" => route("product.create"),
+            "product" => null
         ]);
     }
 
@@ -68,6 +69,8 @@ class ProductController extends Controller
             'description' => $request->description,
             "photo_path" => request()->photo_path != null ? $this->storeImage(request()->photo_path->extension()) : "/images/default.png",
             'user_id' => auth()->user()->id,
+            'price' => $request->price,
+
         ]);
         return redirect("/");
     }

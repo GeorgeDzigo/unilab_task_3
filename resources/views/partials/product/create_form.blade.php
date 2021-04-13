@@ -14,7 +14,7 @@
                             class="input @error("title") is-danger @enderror"
                             name="title"
                             id="title"
-                            value="{{ Request::fullUrl() == route("product.create") ? old("title") : $product->title }}"
+                            value="{{ $product == null ? old("title") : $product->title }}"
                         >
                         @error('title')
                         <p class="help is-danger">{{ $message }}</p>
@@ -31,13 +31,32 @@
                             class="textarea @error("description") is-danger @enderror"
                             name="description"
                             id="description"
-                        >{{ Request::fullUrl() == route("product.create") ? old("description") : $product->description }}</textarea>
+                        >{{ $product == null ? old("description") : $product->description }}</textarea>
 
                         @error("description")
                         <p class="help is-danger">{{ $message }}</p>
                         @enderror
                     </div>
             </div>
+
+            <div class="field">
+                <label for="price" class="label">Price</label>
+                <div class="control">
+                    <input
+                        type="number"
+                        class="input @error("price") is-danger @enderror"
+                        name="price"
+                        id="price"
+                        style="width: 60%;"
+                        value="{{ $product == null ? old("price") : $product->price }}"
+                    >
+                    @error('price')
+                    <p class="help is-danger">{{ $message }}</p>
+                    @enderror
+
+                </div>
+            </div>
+
             <br />
             <div class="field">
                 <div id="file-js-example" class="file has-name">

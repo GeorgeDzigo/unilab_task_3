@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountActivationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
