@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\CartHistory;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,9 +46,16 @@ class CartController extends Controller
     *   Deleting carted products
     */
 
-    public function delete(Product $product)
+    public function delete(Product $product, CartHistory $cartHistory)
     {
-        Cart::where("product_id", $product->id)->first()->delete();
+        $inCartProduct = Cart::where("product_id", $product->id)->first();
+        $cartHistory->create([
+            "user_id" => auth()->id(),
+            "product_id" => $product->id,
+            "product_price" => $product->price,
+            "quantity" => $inCartProduct->quantity,
+        ]);
+        $inCartProduct->delete();
         return redirect(route("cart.show"));
     }
 }
