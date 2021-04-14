@@ -52,15 +52,17 @@
                                 </li>
                             @endif
                         @else
+
                             <li class="nav-item">
-                                <a  class="nav-link" href="{{route("home")}}" role="button">
-                                    {{ Auth::user()->name }}
-                                </a>
+                                <a class="nav-link text-primary" href="{{ route("product.create") }}">Create Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" href="{{ route("account.show") }}"> {{ Auth()->user()->status == 0 ? "Enable Your Account" : "Disable Your Account" }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                              document.getElementById('logout-form').submit();">    
+                                              document.getElementById('logout-form').submit();">
                                  {{ __('Logout') }}
                                 </a>
 
@@ -68,14 +70,17 @@
                                  @csrf
                              </form>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-primary" href="{{ route("product.create") }}">Create Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-danger" href="{{ route("account.show") }}"> {{ Auth()->user()->status == 0 ? "Enable Your Account" : "Disable Your Account" }}</a>
+                            <li class="nav-item"style="
+                            position: absolute;
+                            float: right;
+                            left: 80%;
+                            ">
+                                <a  class="nav-link" href="{{route("home")}}" role="button">
+                                    {{ Auth::user()->name }}
+                                </a>
                             </li>
                         @endguest
-                        <li class="nav-item" style="margin-left: 150px">
+                        <li class="nav-item" style="margin-left: 45px;">
                             <a href="{{route("cart.show")}}"><img src="https://img.icons8.com/fluent-systems-regular/30/000000/fast-cart.png" class="nav-link"/></a>
                         </li>
                     </ul>

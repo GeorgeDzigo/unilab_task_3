@@ -9,4 +9,9 @@ class CartHistory extends Model
 {
     use HasFactory;
     protected $fillable = ["user_id", "product_id", "product_price", "quantity"];
+
+    function productBelongsTo()
+    {
+        return $this->belongsTo(Product::class, "product_id", "id");
+    }
 }

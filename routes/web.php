@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountActivationController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartHistoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'userStatusCheck'])->group(function () {
         Route::post("/add/{product}", [CartController::class, "add"])->name("add");
 
         Route::post("/delete/{product}", [CartController::class, "delete"])->name("delete");
+        Route::get("/history", [CartHistoryController::class, "show"])->name("history");
     });
 });
 
